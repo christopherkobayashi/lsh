@@ -416,7 +416,7 @@ init_client_options(struct client_options *self,
   self->exit_code = exit_code;
   
   self->not = 0;
-  self->port = "ssh";
+  self->port = NULL;
   self->remote = NULL;
 
   self->local_user = self->user = getenv("LOGNAME");

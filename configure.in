@@ -353,7 +353,11 @@ fi
 
 AC_CHECK_LIB(crypt, crypt)
 AC_CHECK_LIB(xnet, inet_addr)
-AC_CHECK_LIB(nsl, gethostbyname)
+
+# Some linux systems seems to have a broken or incompatible libnsl.a
+# So link with it only if we can't do without it
+AC_SEARCH_LIBS(gethostbyname, nsl)
+
 AC_CHECK_LIB(socket, setsockopt)
 dnl logwtmp is also in libutil
 AC_CHECK_LIB(util, openpty)

@@ -1028,6 +1028,7 @@ client_argp_parser(int key, char *arg, struct argp_state *state)
 		goto loop_done;
 	      }
 	loop_done:
+          ;
 	}
       break;
 		

@@ -1,3 +1,19 @@
+2001-10-30  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/argp/argp-parse.c (__sleep): Inf not compiling in libc,
+	#define to sleep. XXX Fix in head branch.
+
+2001-10-23  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/argp/argp-help.c (__strcasecmp): If not compiling in
+	libc, #define to strcasecmp. XXX Fix in head branch.
+
+	* src/argp/argp-fmtstream.c (__vsnprintf): If not compiling in
+	libc, #define to vsnprintf. XXX Fix in head branch.
+
+	* configure.in: Use AC_SEARCH_LIBS when checking for gethostbyname
+	and libnsl. XXX Fix in head branch.
+
 2001-09-26  Niels Möller  <nisse@ehand.com>
 
 	* src/zlib.c (zlib_deflate): Bugfix: Call deflateEnd, not

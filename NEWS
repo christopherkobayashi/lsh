@@ -1,3 +1,9 @@
+News for the 1.2.5 release:
+
+	Fixed bug in SSH2-bug-compatibility code.
+
+	Fixed bug in zlib cleanup.
+
 News for the 1.2.4 release:
 
 	Fixed bug that crashed lshd if client tried an unknown

@@ -102,6 +102,9 @@
 /* Define to support non-standard packets of ssh2 */
 #undef DATAFELLOWS_WORKAROUNDS
 
+/* Define to enable the initgroups workaround */
+#undef INITGROUPS_WORKAROUND
+
 /* Global variables needed by argp */
 #undef HAVE_PROGRAM_INVOCATION_NAME
 #undef HAVE_PROGRAM_INVOCATION_SHORT_NAME

@@ -98,6 +98,8 @@ do_read_line(struct read_handler **h,
       /* Too long line */
       EXCEPTION_RAISE(self->e,
 		      make_protocol_exception(0, "Line too long."));
+
+      return available;
     }
 
   /* Ok, now we have a line. Copy it into the buffer. */

@@ -256,7 +256,7 @@ sockaddr2info(size_t addr_len,
 struct sockaddr *
 address_info2sockaddr(socklen_t *length,
 		      struct address_info *a,
-		      const int *preference,
+		      int *socket,
 		      int lookup);
 
 /* Returns an exception, if anything went wrong */
@@ -284,6 +284,7 @@ make_exc_finish_read_handler(struct lsh_fd *fd,
 
 struct lsh_fd *
 io_connect(struct io_backend *b,
+	   int socket,
 	   struct sockaddr *remote,
 	   socklen_t remote_length,
 	   struct command_continuation *c,
@@ -291,6 +292,8 @@ io_connect(struct io_backend *b,
 
 struct lsh_fd *
 io_listen(struct io_backend *b,
+	  /* Should be an open socket of the right type. */
+	  int socket,
 	  struct sockaddr *local,
 	  socklen_t length,
 	  struct io_callback *callback,

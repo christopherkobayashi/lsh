@@ -345,6 +345,7 @@ do_userauth(struct command *s,
 			  c, e,
                           make_exc_userauth_handler(connection,
                                                     self->advertised_methods,
+						    /* FIXME: Use connection->e ? */
                                                     AUTH_ATTEMPTS, e,
                                                     HANDLER_CONTEXT));
 }

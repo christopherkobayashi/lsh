@@ -66,6 +66,10 @@
 #endif
 #endif /* _LIBC */
 
+#ifndef _LIBC
+#  define __sleep(t) sleep(t)
+#endif
+
 #include "argp.h"
 #include "argp-namefrob.h"
 
@@ -1260,6 +1264,7 @@ __argp_input (const struct argp *argp, const struct argp_state *state)
 
   return 0;
 }
+
 #ifdef weak_alias
 weak_alias (__argp_input, _argp_input)
 #endif

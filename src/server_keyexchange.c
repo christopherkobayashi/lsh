@@ -67,7 +67,7 @@ do_handle_dh_init(struct packet_handler *c,
   CAST(dh_server, closure, c);
   int res;
   
-  trace("handle_dh_init\n");
+  trace("do_handle_dh_init\n");
 
   res = dh_process_client_msg(&closure->dh, packet);
   lsh_string_free(packet);
@@ -135,9 +135,8 @@ do_init_server_dh(struct keyexchange_algorithm *c,
 	{
 	  hostkey_algorithm = ATOM_SSH_DSS_KLUDGE_LOCAL;
 	}
-      else
 #endif
-	dh->hostkey_algorithm = hostkey_algorithm;
+      dh->hostkey_algorithm = hostkey_algorithm;
 
       dh->algorithms = algorithms;
   

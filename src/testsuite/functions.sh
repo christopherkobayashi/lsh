@@ -52,10 +52,21 @@ test_result=1
 
 test_fail () {
     test_result=1
+    exit
 }
 
 test_success () {
     test_result=0
+    exit
+}
+
+werror () {
+    echo 1>&2 "$1"
+}
+
+die () {
+    werror "$1"
+    test_fail
 }
 
 trap 'eval "$ATEXIT ; exit \$test_result"' 0

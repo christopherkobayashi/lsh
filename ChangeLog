@@ -1,3 +1,7 @@
+2001-04-18  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* Released lsh-1.2.1.
+
 2001-04-17  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* src/lshg.c (do_exc_lshg_handler): Fixed werror format string.

@@ -1,3 +1,26 @@
+2001-05-23  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/xalloc.h (CHECK_TYPE) [!DEBUG_ALLOC]: Cast to (struct
+	lsh_object *).
+	(CHECK_SUBTYPE) [!DEBUG_ALLOC]: Likewise. XXX: Fix in main branch.
+
+	* src/io_commands.c (do_listen): Updated for changes to
+	address_info2sockaddr and io_listen.
+	(do_connect): Updated for changes to
+	address_info2sockaddr and io_connect.
+
+	* src/io.c (choose_address): Try creating a socket of the
+	appropriate type. XXX: Fix in some way or other in the main
+	branch.
+	(address_info2sockaddr): Added argument for returning an
+	appropriate socket.  
+	(address_info2sockaddr) [WITH_IPV6]: Pass on argument to choose_address.
+	(address_info2sockaddr) [!WITH_IPV6]: Create socket.
+	(io_connect): Added socket argument.
+	(io_listen): Likewise.
+	(io_listen_local): Updated for the io_listen change.
+	(io_connect_local): Updated for the io_connect change.
+
 2001-05-11  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* configure.in: Bumped version to 1.2.2.

@@ -1,3 +1,8 @@
+News for the 1.2.3 release:
+
+	An lshd compiled with IPv6 support didn't work on machines
+	without IPv6. Fixed. 
+	
 News for the 1.2.2 release:
 
 	Fixed the lshd --daemon feature.

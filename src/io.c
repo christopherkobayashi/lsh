@@ -1159,7 +1159,8 @@ sockaddr2info(size_t addr_len UNUSED,
 #if HAVE_GETADDRINFO
 static struct addrinfo *
 choose_address(struct addrinfo *list,
-	       const int *preference)
+	       const int *preference,
+	       int *s)
 {
   int i;
   for (i = 0; preference[i]; i++)
@@ -1167,7 +1168,12 @@ choose_address(struct addrinfo *list,
       struct addrinfo *p;
       for (p = list; p; p = p->ai_next)
 	if (preference[i] == p->ai_family)
-	  return p;
+	  {
+	    *s = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+	    if (*s<0)
+	      continue;
+	    return p;
+	  }
     }
   return NULL;
 }
@@ -1178,8 +1184,7 @@ choose_address(struct addrinfo *list,
 struct sockaddr *
 address_info2sockaddr(socklen_t *length,
 		      struct address_info *a,
-		      /* Preferred address families. Zero-terminated array. */
-		      const int *preference,
+		      int *s,
 		      int lookup)
 {
   char *host;
@@ -1234,7 +1239,7 @@ address_info2sockaddr(socklen_t *length,
       }
 
     chosen = choose_address(list,
-			    preference ? preference : default_preference);
+			    default_preference, s);
     if (!chosen)
       {
 	freeaddrinfo(list);
@@ -1307,6 +1312,15 @@ address_info2sockaddr(socklen_t *length,
 	      memcpy(&addr->sin_addr, hp->h_addr, hp->h_length);
 	    }
 	}
+      if (addr)
+	{
+	  *s = socket(AF_INET, SOCK_STREAM, 0);
+	  if (*s < 0)
+	    {
+	      lsh_space_free(addr);
+	      addr = NULL;
+	    }
+	}
       return (struct sockaddr *) addr;
     }
 #endif /* !HAVE_GETADDRINFO */  
@@ -1376,16 +1390,15 @@ make_lsh_fd(struct io_backend *b,
 /* Some code is taken from Thomas Bellman's tcputils. */
 struct lsh_fd *
 io_connect(struct io_backend *b,
+	   int s,
 	   struct sockaddr *remote,
 	   socklen_t remote_length,
 	   struct command_continuation *c,
 	   struct exception_handler *e)
 {
-  int s = socket(remote->sa_family, SOCK_STREAM, 0);
   struct lsh_fd *fd;
   
-  if (s<0)
-    return NULL;
+  assert(s >= 0);
 
   trace("io.c: Connecting using fd %i\n", s);
   
@@ -1420,16 +1433,15 @@ io_connect(struct io_backend *b,
 
 struct lsh_fd *
 io_listen(struct io_backend *b,
+	  int s,
 	  struct sockaddr *local,
 	  socklen_t length,
 	  struct io_callback *callback,
 	  struct exception_handler *e)
 {
-  int s = socket(local->sa_family, SOCK_STREAM, 0);
   struct lsh_fd *fd;
-  
-  if (s<0)
-    return NULL;
+
+  assert(s >= 0);
 
   trace("io.c: Listening on fd %i\n", s);
   
@@ -1587,6 +1599,7 @@ io_listen_local(struct io_backend *b,
   struct sockaddr_un *local;
   socklen_t local_length;
 
+  int s;
   struct lsh_fd *fd;
   
   assert(info->directory && NUL_TERMINATED(info->directory));
@@ -1627,7 +1640,10 @@ io_listen_local(struct io_backend *b,
   old_umask = umask(0077);
 
   /* Bind and listen */
-  fd = io_listen(b, (struct sockaddr *) local, local_length, callback, e);
+  s = socket(AF_UNIX, SOCK_STREAM, 0);
+  fd = ( (s >= 0)
+	 ? io_listen(b, s, (struct sockaddr *) local, local_length, callback, e)
+	 : NULL);
   
   /* Ok, now we restore umask and cwd */
   umask(old_umask);
@@ -1649,6 +1665,7 @@ io_connect_local(struct io_backend *b,
   struct sockaddr_un *addr;
   socklen_t addr_length;
 
+  int s;
   struct lsh_fd *fd;
   
   assert(info->directory && NUL_TERMINATED(info->directory));
@@ -1669,8 +1686,11 @@ io_connect_local(struct io_backend *b,
   old_cd = safe_pushd(info->directory->data, 0);
   if (old_cd < 0)
     return NULL;
-  
-  fd = io_connect(b, (struct sockaddr *) addr, addr_length, c, e);
+
+  s = socket(AF_UNIX, SOCK_STREAM, 0);
+  fd = ( (s >= 0)
+	 ? io_connect(b, s, (struct sockaddr *) addr, addr_length, c, e)
+	 : NULL);
 
   safe_popd(old_cd, info->directory->data);
 

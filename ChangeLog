@@ -1,3 +1,14 @@
+2001-09-13  Niels Möller  <nisse@ehand.com>
+
+	* src/testsuite/functions.sh (spawn_lshd): Use 127.0.0.1 instead
+	of localhost. FIX copied from main branch.
+
+	* src/lshd.c (do_exc_lshd_handler): Don't crash on EXC_RESOLVE
+	exceptions. 
+
+	* src/io.c (address_info2sockaddr): Fixed debug invocation. FIXED
+	in head branch as well.
+
 2001-09-12  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* Released 1.2.4.

@@ -266,6 +266,7 @@ do_exc_userauth_handler(struct exception_handler *s,
     default:
       EXCEPTION_RAISE(self->super.parent, x);
       break;
+
     case EXC_USERAUTH:
       {
 	/* Unlock connection */
@@ -343,10 +344,12 @@ do_userauth(struct command *s,
   connection->dispatch[SSH_MSG_USERAUTH_REQUEST] =
     make_userauth_handler(self->methods, self->services,
 			  c, e,
+			  /* Use the connection's exception handler as
+			   * parent, in order to get reasonable
+			   * handling of EXC_PROTOCOL. */
                           make_exc_userauth_handler(connection,
                                                     self->advertised_methods,
-						    /* FIXME: Use connection->e ? */
-                                                    AUTH_ATTEMPTS, e,
+                                                    AUTH_ATTEMPTS, connection->e,
                                                     HANDLER_CONTEXT));
 }
 

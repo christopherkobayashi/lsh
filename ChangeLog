@@ -2,6 +2,11 @@
 
 	* Released lsh-1.4.3.
 
+	* src/server_pty.c (pty_open_slave): Removed call to setsid(),
+	moved to...
+	* src/unix_user.c (do_spawn): Call setsid(). Was previously done by
+	the pty code, and only in the pty case. Fix backported from lsh-1.5.
+
 	* misc/mkdiff: Copied the script from the old lsh_1_2_BRANCH.
 
 2003-09-19  Niels Möller  <niels@s3.kth.se>

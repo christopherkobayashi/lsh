@@ -257,12 +257,6 @@ pty_open_slave(struct pty_info *pty)
   int fd;
   
   trace("pty_open_slave\n");
-  if (setsid() < 0)
-    {
-      werror("tty_setctty: setsid failed, already process group leader?\n"
-	     "   (errno = %i): %z\n", errno, STRERROR(errno));
-      return -1;
-    }
 
   /* Open the slave. On Sys V, that also makes it our controlling tty. */
   fd = open(lsh_get_cstring(pty->tty_name), O_RDWR);

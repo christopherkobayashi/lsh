@@ -7,6 +7,9 @@ News for the 1.4.3 release
 	failure in the handling of channel_open, and in the
 	experimental client SRP code.
 
+	Backported lshd setsid fix from lsh-1.5. Should call setsid
+	both in the pty and non-pty cases.
+	
 	Updated the code to compile with automake-1.7.3 and
 	scsh-0.6.0. 
 

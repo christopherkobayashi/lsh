@@ -1,7 +1,7 @@
 dnl $Id$
 
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([lsh], [1.4.2], [bug-lsh@gnu.org]) 
+AC_INIT([lsh], [1.4.3], [bug-lsh@gnu.org]) 
 AC_PREREQ(2.52)
 AC_CONFIG_SRCDIR([src/lsh_types.h])
 AM_INIT_AUTOMAKE
@@ -801,6 +801,5 @@ fi
 AC_CONFIG_FILES([Makefile doc/Makefile misc/Makefile
 	  src/Makefile src/scm/Makefile
 	  src/testsuite/Makefile src/rsync/Makefile
-	  src/nettle/Makefile
 	  contrib/Makefile contrib/lsh.spec])
 AC_OUTPUT

@@ -1,5 +1,8 @@
 News for the 1.2.3 release:
 
+	Fixed a server userauth bug with Denial of Service
+	implications.
+	
 	An lshd compiled with IPv6 support didn't work on machines
 	without IPv6. Fixed. 
 	

@@ -1,3 +1,7 @@
+2001-06-26  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* configure.in: Bumped version to 1.2.3.
+
 2001-06-26  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/server_userauth.c (do_userauth): Use the connection's

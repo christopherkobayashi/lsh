@@ -406,9 +406,13 @@ fi
 AC_PATH_X
 
 if test -z "$no_x" ; then
+  if test -n "$x_includes" ; then
     CPPFLAGS="$CPPFLAGS -I$x_includes"
+  fi
+  if test -n "$x_libraries" ; then
     LDFLAGS="$LDFLAGS -L$x_libraries"
     LSH_RPATH_ADD($x_libraries)
+  fi
 fi
 
 AC_CHECK_HEADERS(X11/Xauth.h)

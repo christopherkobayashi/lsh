@@ -1,3 +1,9 @@
+2004-07-11  Niels Möller  <nisse@lysator.liu.se>
+        Copied 2003-01-14 fix from the head branch:
+
+	* configure.ac (AC_PATH_X): Check not only $no_x, also check if
+	$x_includes and $x_libraries are empty before adding new flags.
+
 2003-09-20  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* Released lsh-1.4.3.

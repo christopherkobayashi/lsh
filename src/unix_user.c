@@ -670,6 +670,105 @@ do_chdir_home(struct lsh_user *u)
   return 1;  
 }
 
+#if INITGROUPS_WORKAROUND
+
+/* Currently, we do this only for linux, x86 and gcc */
+
+#if defined(__linux__) && defined(__GNUC__) && defined (__i386__)
+/* This worked fine, and was adopted into glibc, until setgroups got a
+   similar limitation, so we override it as well. */
+#include <linux/posix_types.h>
+#include <sys/syscall.h>
+
+static int
+xsetgroups (size_t n, const gid_t *groups)
+{
+  size_t i;
+  __kernel_gid_t kernel_groups[n];
+
+  for (i = 0; i < n; i ++)
+    kernel_groups[i] = groups[i];
+
+  {
+    long res;
+    __asm__ volatile ("int $0x80"
+                    : "=a" (res)
+                    : "0" (__NR_setgroups),"b" ((long)(n)),
+                    "c" ((long)(kernel_groups)));
+
+    if ((unsigned long)(res) >= (unsigned long)(-125)) {
+      errno = -res;
+      res = -1;
+    }
+    return (int) (res);
+  }
+}
+#define setgroups xsetgroups
+#endif /* linux && GNUC && i386 */
+/* The GNU C Library currently has a compile-time limit on the number of
+   groups a user may be a part of, even if the underlying kernel has been
+   fixed, and so we define our own initgroups. */
+static int
+xinitgroups (char *user, gid_t gid)
+{
+  struct group *grp;
+  gid_t *buf;
+  int buflen, ngroups, res;
+
+  /* Initialise the list with the specified GID. */
+  ngroups = 0;
+  buflen = 16;
+  buf = malloc (buflen * sizeof (*buf));
+  if (!buf)
+    {
+      errno = ENOMEM;
+      return -1;
+    }
+  buf[ngroups ++] = gid;
+
+  setgrent ();
+  while ((grp = getgrent ()))
+    {
+      /* Scan the member list for our user. */
+      char **p = grp->gr_mem;
+      while (*p && strcmp (*p, user))
+      p ++;
+
+      if (*p)
+      {
+        /* We found the user in this group. */
+        if (ngroups == buflen)
+          {
+	    gid_t *newbuf;
+	    
+            /* Enlarge the group list. */
+            buflen *= 2;
+            newbuf = realloc (buf, buflen * sizeof (*buf));
+	    if (!newbuf)
+	      {
+		free(buf);
+		errno = ENOMEM;
+		return -1;
+	      }
+	    buf = newbuf;
+          }
+
+        /* Add the group id to our list. */
+        buf[ngroups ++] = grp->gr_gid;
+      }
+    }
+  endgrent ();
+
+  /* Return whatever setgroups says. */
+  res = setgroups (ngroups, buf);
+  free (buf);
+  return res;
+}
+#define initgroups xinitgroups
+
+
+#endif /* INITGROUPS_WORKAROUND */
+
 static int
 change_uid(struct unix_user *user)
 {

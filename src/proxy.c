@@ -71,6 +71,7 @@ do_exc_chain_connections_handler(struct exception_handler *c,
 	    /* NOTE: It's fine to pass the same exception to several
 	     * handlers. */
 	    EXCEPTION_RAISE(chain->e, e);
+	    /* Raise the same exception with the parent handler too. */
 	  }
       }
     }

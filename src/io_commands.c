@@ -133,17 +133,18 @@ do_listen(struct io_backend *backend,
 {
   struct sockaddr *addr;
   socklen_t addr_length;
+  int socket;
   
   struct lsh_fd *fd;
 
-  addr = address_info2sockaddr(&addr_length, a, NULL, 0);
+  addr = address_info2sockaddr(&addr_length, a, &socket, 0);
   if (!addr)
     {
       EXCEPTION_RAISE(e, &resolve_exception);
       return;
     }
 
-  fd = io_listen(backend,
+  fd = io_listen(backend, socket,
 		 addr, addr_length,
 		 make_listen_callback(backend, accept_c, e),
 		 e);
@@ -258,13 +259,14 @@ do_connect(struct io_backend *backend,
 {
   struct sockaddr *addr;
   socklen_t addr_length;
+  int socket;
   struct lsh_fd *fd;
 
   /* Address must specify a host */
   assert(a->ip);
 
   /* Performs dns lookups */
-  addr = address_info2sockaddr(&addr_length, a, NULL, 1);
+  addr = address_info2sockaddr(&addr_length, a, &socket, 1);
   if (!addr)
     {
       EXCEPTION_RAISE(e, &resolve_exception);
@@ -273,7 +275,7 @@ do_connect(struct io_backend *backend,
 
   /* If the name is canonicalized in any way, we should pass the
    * canonical name to make_connect_continuation .*/
-  fd = io_connect(backend, addr, addr_length, 
+  fd = io_connect(backend, socket, addr, addr_length, 
 		  make_connect_continuation(a, c), e);
   lsh_space_free(addr);
 

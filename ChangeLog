@@ -1,5 +1,8 @@
 2003-09-19  Niels Möller  <niels@s3.kth.se>
 
+	* src/client_keyexchange.c (do_handle_srp_reply): Fixed missing
+	returns after disconnect_kex_failed and PROTOCOL_ERROR.
+
 	* src/read_line.c (do_read_line): Fixed buffer overrun, with
 	potential remote root compromise. Fixed in HEAD branch.
 

@@ -438,6 +438,7 @@ do_exc_userauth_disconnect(struct exception_handler *s,
       EXCEPTION_RAISE(self->connection->e,
 		      make_protocol_exception(SSH_DISCONNECT_NO_MORE_AUTH_METHODS_AVAILABLE,
 					      NULL));
+      /* FIXME: Should we return here? */
     }
 
   EXCEPTION_RAISE(s->parent, e);

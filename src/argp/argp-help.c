@@ -86,6 +86,9 @@ char *alloca ();
 # ifndef __strchrnul
 #  define __strchrnul strchrnul
 # endif
+# ifndef __strcasecmp
+#  define __strcasecmp strcasecmp
+# endif
 # ifndef __mempcpy
 #  define __mempcpy mempcpy
 # endif

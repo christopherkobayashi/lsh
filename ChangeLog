@@ -1,3 +1,14 @@
+2001-04-17  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* src/lshg.c (do_exc_lshg_handler): Fixed werror format string.
+	Fix copied from main branch.
+
+	* src/unix_user.c (xsetgroups): Use the _syscall2 macro instead of
+	inline assembly.
+
+	* src/lshd.c (main_argp_parser): Bugfix: Use the supplied
+	interface! Copied from main branch.
+
 2001-04-12  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* src/testsuite/functions.sh (spawn_lshd): Pass arguments to lshd.

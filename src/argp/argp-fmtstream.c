@@ -45,6 +45,10 @@
 # define __vsnprintf(s, l, f, a) _IO_vsnprintf (s, l, f, a)
 #endif
 
+#ifndef _LIBC
+# define __vsnprintf(s, l, f, a) vsnprintf(s, l, f, a)
+#endif
+
 #define INIT_BUF_SIZE 200
 #define PRINTF_SIZE_GUESS 150
 

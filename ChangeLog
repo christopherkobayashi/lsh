@@ -1,3 +1,14 @@
+2001-05-11  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* configure.in: Bumped version to 1.2.2.
+
+	* src/lshd.c (main): Start the background randomness poll *after*
+	forking into the background. Copied from main branch.
+
+	* src/testsuite/functions.sh (PIDFILE): New variable, with
+	absolute path to the pid-file. Copied from main branch.
+	(spawn_lshd): $PIDFILE. Copied from main branch.
+
 2001-04-18  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* Released lsh-1.2.1.

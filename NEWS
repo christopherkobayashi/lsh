@@ -1,3 +1,7 @@
+News for the 1.2.2 release:
+
+	Fixed the lshd --daemon feature.
+	
 News for the 1.2.1 release:
 
 	New configure option --enable-initgroups-workaround.

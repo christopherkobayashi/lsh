@@ -1,3 +1,12 @@
+2001-09-12  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* Released 1.2.4.
+
+	* configure.in: Bumped version to 1.2.4.
+
+	* src/dsa.c (do_dsa_sign): Display any unexpected algorithm atom
+	before crashing.
+
 2001-09-12  Niels Möller  <nisse@ehand.com>
 
 	* src/client.c (client_argp_parser): Using a label at the end of a

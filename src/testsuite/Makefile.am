@@ -22,6 +22,7 @@ TS_ALL = $(TS_PROGS) $(TS_SH) $(TS_MORE_PROGS) $(TS_MORE_SH)
 # SUFFIXES = .c .o
 noinst_PROGRAMS = $(TS_PROGS)
 
+# FIXME: This breaks if @LIBARGP@ is empty.
 LDADD = ../liblsh.a ../symmetric/libsymmetric.a $(addprefix ../,@LIBARGP@)
 
 EXTRA_DIST = macros.m4 $(SOURCES:.c=.m4) $(TS_SH) $(TS_MORE_SH) \

@@ -231,6 +231,8 @@ do_line(struct line_handler **h,
       return;
     case -1:
       /* Display line */
+      /* FIXME: Add some prefix to say what kind of data this is. And
+       * possibly disable it completely for the server. */
       werror("%ps\n", length, line);
 
       /* Read next line */

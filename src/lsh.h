@@ -84,6 +84,7 @@ struct lsh_string_header
 
 #else   /* !DEBUG_ALLOC */
 
+/* FIXME: Empty structs are not allowed by ANSI-C */
 struct lsh_string_header {};
 
 #endif  /* !DEBUG_ALLOC */

@@ -1,7 +1,13 @@
+2002-02-22  Niels Möller  <nisse@cuckoo.hack.org>
+
+	(client_argp_parser): Fixed port error message not to try printing
+	NULL. FIXED in head branch as well.
+
 2002-02-22  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/client.c (init_client_options): Initialize port to NULL, in
-	order to get the fallback from "ssh" -> 22 to work.
+	order to get the fallback from "ssh" -> 22 to work. FIXED in head
+	branch as well.
 
 2001-10-30  Niels Möller  <nisse@lysator.liu.se>
 

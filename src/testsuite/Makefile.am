@@ -1,6 +1,9 @@
 # Testsuite
 
-CFLAGS = @CFLAGS@ -O0
+# -O0 is not recogniced on AIX
+# AM_CFLAGS = -O0
+
+AM_CPPFLAGS = -I$(srcdir)/..
 
 # Tests that can be used without any special setup.
 TS_PROGS = arcfour-test aes-test blowfish-test cast128-test \
@@ -11,7 +14,8 @@ TS_PROGS = arcfour-test aes-test blowfish-test cast128-test \
 
 TS_SH = conv-1-test conv-2-test conv-3-test \
 	export-1-test keygen-1-test keygen-2-test \
-	write-key-1-test write-key-2-test seed-test
+	write-key-1-test write-key-2-test seed-test \
+	random-input-test
 
 TS_SOME = $(TS_PROGS) $(TS_SH)
 

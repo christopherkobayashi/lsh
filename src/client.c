@@ -887,7 +887,8 @@ client_argp_parser(int key, char *arg, struct argp_state *state)
 	    options->remote = make_address_info_c(arg, "ssh", 22);
 	  
 	  if (!options->remote)
-	    argp_error(state, "Invalid port or service '%s'.", options->port);
+	    argp_error(state, "Invalid port or service '%s'.",
+		       options->port ? options->port : "22");
 
 	  break;
 	}

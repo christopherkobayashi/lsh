@@ -1,3 +1,8 @@
+2001-05-23  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* src/io.c (choose_address): Added debug message saying which
+	address family was choosen.
+
 2001-05-23  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/xalloc.h (CHECK_TYPE) [!DEBUG_ALLOC]: Cast to (struct

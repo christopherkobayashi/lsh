@@ -1,3 +1,36 @@
+2003-09-19  Niels Möller  <niels@s3.kth.se>
+
+	* src/testsuite/functions.sh (test_fail, test_success): Call exit.
+	(werror, die): New functions.
+
+	* src/testsuite/Makefile.am (AM_CPPFLAGS): Set AM_CPPFLAGS, not
+	CFLAGS.
+	(TS_SH): Added random-input-test.
+
+	* src/testsuite/random-input-test: New test case that connects to
+	lshd and sends some random data.
+
+	* src/scm/make-char-classes.scm: In scsh-0.6, the procedures
+	ascii-range->char-set and char-set-members are renamed to
+	ucs-range->char-set and char-set->list.
+	* src/scm/guile-compat.scm: Renamed the corresponding
+	compatibility functions
+
+	* src/scm/gaba.scm (main): Copied cleaned up main prodcedure from
+	the 1.5 branch. In particular, it now calls (exit 0) explicitly.
+
+	* src/scm/compiler.scm (let-and): Fixed syntax error in macro
+	definition. 
+
+	* misc/bootstrap.sh: Deleted arguments from the automake -a call.
+
+	* configure.ac: Bumped version to 1.4.3. Don't try to output
+	src/nettle/Makefile from this configure-script.
+
+	* Makefile.am.in: Don't use $(top_srcdir)/misc/ctags.mk, as ctags
+	support is included with automake-1.7.3.
+	* src/Makefile.am.in: Likewise.
+
 2002-07-05  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* src/lshd.c: Disabled incomplete x11 forwarding for now.

@@ -1,3 +1,8 @@
+2002-02-22  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/client.c (init_client_options): Initialize port to NULL, in
+	order to get the fallback from "ssh" -> 22 to work.
+
 2001-10-30  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/argp/argp-parse.c (__sleep): Inf not compiling in libc,

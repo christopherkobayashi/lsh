@@ -35,7 +35,7 @@
 (define (is-in-charset? set n)
   (not (zero? (char->integer (string-ref set n)))))
 
-(define (char-set-members char-set)
+(define (char-set->list char-set)
   (define (helper n)
     (cond ((>= n 256) '())
           ((is-in-charset? char-set n) (cons (integer->char n)
@@ -43,7 +43,8 @@
           (else (helper (1+ n)))))
   (helper 0))
 
-(define (ascii-range->char-set lower upper)
+; NOTE: Supports only ascii/latin1
+(define (ucs-range->char-set lower upper)
   (do ((result (make-string 256 (integer->char 0)))
        (i lower (+ i 1)))
       ((= i upper) result)

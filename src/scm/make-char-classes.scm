@@ -83,7 +83,7 @@
 	((symbol? o)
 	 (cdr (assq o names)))
 	((and (pair? o) (not (pair? (cdr o))))
-	 (ascii-range->char-set (->ascii (car o))
+	 (ucs-range->char-set (->ascii (car o))
 				(+ 1 (->ascii (cdr o)))))
 	((list? o)
 	 (reduce char-set-union (chars->char-set
@@ -142,9 +142,9 @@
   (if (tree/leaf? tree)
       (list 'leaf
 	    (tree/index tree)
-	    (char-set-members (tree/set tree)))
+	    (char-set->list (tree/set tree)))
       (list 'node
-	    (char-set-members (tree/set tree))
+	    (char-set->list (tree/set tree))
 	    (tree-describe (tree/left tree))
 	    (tree-describe (tree/right tree))	    )))
 
@@ -152,13 +152,13 @@
   (let ((cache (map (lambda (tree) (cons (tree/set tree) tree))
 		    initial)))
     (lambda (set)
-      (debug "cache: ~s\n" (map (lambda (pair) (char-set-members (car pair)))
+      (debug "cache: ~s\n" (map (lambda (pair) (char-set->list (car pair)))
 				   cache))
       (cond ((char-set-assoc set cache)
 	     => cdr)
 	    (else
 	     (let ((new (make-tree set)))
-	       (debug "Adding set ~s\n" (char-set-members set))
+	       (debug "Adding set ~s\n" (char-set->list set))
 	       (set! cache (cons (cons set new) cache))
 	       new))))))
 
@@ -244,7 +244,7 @@
 		(let ((flag (tree/index leaf)))
 		  (for-each (lambda (c)
 			      (vector-set! table (char->ascii c) flag))
-			    (char-set-members (tree/set leaf)))))
+			    (char-set->list (tree/set leaf)))))
 	      leafs)
     table))
 
@@ -333,4 +333,5 @@
   (make-char-classes test-2-input))
 
 (define (main . ignored)
-  (make-char-classes (read)))
+  (make-char-classes (read))
+  (exit 0))

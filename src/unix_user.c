@@ -672,13 +672,16 @@ do_chdir_home(struct lsh_user *u)
 
 #if INITGROUPS_WORKAROUND
 
-/* Currently, we do this only for linux, x86 and gcc */
+/* Currently, we do this only for linux and gcc */
 
-#if defined(__linux__) && defined(__GNUC__) && defined (__i386__)
+#if defined(__linux__) && defined(__GNUC__)
 /* This worked fine, and was adopted into glibc, until setgroups got a
    similar limitation, so we override it as well. */
 #include <linux/posix_types.h>
 #include <sys/syscall.h>
+
+#define __NR_my_setgroups __NR_setgroups
+static _syscall2 (int, my_setgroups, size_t, n, __kernel_gid_t *, groups)
 
 static int
 xsetgroups (size_t n, const gid_t *groups)
@@ -688,21 +691,10 @@ xsetgroups (size_t n, const gid_t *groups)
 
   for (i = 0; i < n; i ++)
     kernel_groups[i] = groups[i];
-
-  {
-    long res;
-    __asm__ volatile ("int $0x80"
-                    : "=a" (res)
-                    : "0" (__NR_setgroups),"b" ((long)(n)),
-                    "c" ((long)(kernel_groups)));
-
-    if ((unsigned long)(res) >= (unsigned long)(-125)) {
-      errno = -res;
-      res = -1;
-    }
-    return (int) (res);
-  }
+  
+  return my_setgroups (n, kernel_groups);
 }
+
 #define setgroups xsetgroups
 #endif /* linux && GNUC && i386 */
 /* The GNU C Library currently has a compile-time limit on the number of

@@ -7,7 +7,8 @@
 
 	* src/xalloc.h (CHECK_TYPE) [!DEBUG_ALLOC]: Cast to (struct
 	lsh_object *).
-	(CHECK_SUBTYPE) [!DEBUG_ALLOC]: Likewise. XXX: Fix in main branch.
+	(CHECK_SUBTYPE) [!DEBUG_ALLOC]: Likewise. Fixed copied to main
+	branch. 
 
 	* src/io_commands.c (do_listen): Updated for changes to
 	address_info2sockaddr and io_listen.

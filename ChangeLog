@@ -1,3 +1,14 @@
+2001-09-26  Niels Möller  <nisse@ehand.com>
+
+	* src/zlib.c (zlib_deflate): Bugfix: Call deflateEnd, not
+	inflateEnd, when deleting a deflate object. FIXED in head branch
+	as well.
+
+2001-09-19  Niels Möller  <nisse@ehand.com>
+
+	* src/server_keyexchange.c (do_init_server_dh): Fixed bug in the
+	PEER_SSH_DSS_KLUDGE workaround. FIXED in head branch as well.
+
 2001-09-19  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* configure.in: Bumped version to 1.2.5.

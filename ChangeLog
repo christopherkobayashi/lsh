@@ -1,17 +1,16 @@
 2003-09-19  Niels Möller  <niels@s3.kth.se>
 
 	* src/read_line.c (do_read_line): Fixed buffer overrun, with
-	potential remote root compromise. XXX Fix in HEAD branch.
+	potential remote root compromise. Fixed in HEAD branch.
 
-	* src/proxy.c (do_exc_chain_connections_handler): Clearified
+	* src/proxy.c (do_exc_chain_connections_handler): Clarified
 	comment. 
 
-	* src/client_userauth.c (do_exc_userauth_disconnect): Added FIXME,
-	should EXC_USERAUTH exceptions be passed on to the parent handler?
-	XXX Check HEAD branch too.
+	* src/client_userauth.c (do_exc_userauth_disconnect): Clarified
+	comment on exception handling.
 
 	* src/channel_commands.c (do_channel_open_command): Added missing
-	return after EXCEPTION_RAISE. XXX Fix in HEAD branch.
+	return after EXCEPTION_RAISE. Fixed also in HEAD branch.
 
 	* src/testsuite/functions.sh (test_fail, test_success): Call exit.
 	(werror, die): New functions.

@@ -4,7 +4,8 @@ News for the 1.4.3 release
 	compromise. Initial bug report by Bennett Todd.
 
 	Fixed a similar bug in the check for channel number allocation
-	failure in the handling of channel_open.
+	failure in the handling of channel_open, and in the
+	experimental client SRP code.
 
 	Updated the code to compile with automake-1.7.3 and
 	scsh-0.6.0. 

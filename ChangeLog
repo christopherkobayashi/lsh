@@ -1,3 +1,26 @@
+2001-04-12  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* src/testsuite/functions.sh (spawn_lshd): Pass arguments to lshd.
+	
+	* src/unix_user.c (xsetgroups): New function, without the
+	NGROUPS_MAX limit. XXX Fix in head branch.
+	(xinitgroups): Likewise. XXX Fix in head branch.
+
+	* src/ssh1_fallback.c (fall_back_to_ssh1): Reset the fd to
+	blocking mode.
+
+	* src/io.c (io_set_blocking): New function.
+	(do_exc_finish_read_handler): Close fd immediately on
+	EXC_FINISH_IO.
+
+	* configure.in: Added option --enable-initgroups-workaround. XXX
+	Fix in head branch.  
+
+	* acconfig.h: Added INITGROUPS_WORKAROUND. XXX Fix in head branch. 
+
+	* src/testsuite/Makefile.am (TS_MORE_SH): New test
+	ssh1-fallback-test. 
+
 2001-04-08  Niels Möller  <nisse@cuckoo.hack.org>
 
 	* configure.in: Bumped version to 1.2.1.

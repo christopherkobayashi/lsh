@@ -1,3 +1,7 @@
+2003-09-20  Niels Möller  <nisse@cuckoo.hack.org>
+
+	* Released lsh-1.4.3.
+
 2003-09-19  Niels Möller  <niels@s3.kth.se>
 
 	* src/client_keyexchange.c (do_handle_srp_reply): Fixed missing

@@ -1172,6 +1172,8 @@ choose_address(struct addrinfo *list,
 	    *s = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
 	    if (*s<0)
 	      continue;
+
+	    debug("io.c: address of type %i chosen.\n", p->ai_family);
 	    return p;
 	  }
     }

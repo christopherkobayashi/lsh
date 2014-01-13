@@ -974,7 +974,7 @@ make_client_session(struct client_options *options)
 	in = open("/dev/null", O_RDONLY);
       else 
 	{
-	  in = STDIN_FILENO;
+	  in = dup(STDIN_FILENO);
 	  in_type = IO_STDIO;
 	  is_tty = isatty(STDIN_FILENO);
 	  
@@ -1023,7 +1023,7 @@ make_client_session(struct client_options *options)
   else
     {
       out_type = IO_STDIO;
-      out = STDOUT_FILENO;
+      out = dup(STDOUT_FILENO);
     }
   if (out < 0)
     {
@@ -1040,7 +1040,7 @@ make_client_session(struct client_options *options)
   else
     {
       err_type = IO_STDERR;
-      err = STDERR_FILENO;
+      err = dup(STDERR_FILENO);
     }
   if (err < 0) 
     {

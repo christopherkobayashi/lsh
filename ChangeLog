@@ -1,3 +1,10 @@
+2014-01-13  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/client.c (make_client_session): Call dup on any stdio file
+	descriptors used. io_init_fd wants to set the close-on-exec flag,
+	and doing that on stdio breaks lshg -G, and possibly other things
+	as well. Reported by Ludovic Courtès.
+
 2013-06-26  Niels Möller  <nisse@lysator.liu.se>
 
 	* Released lsh-2.1.

@@ -1,3 +1,8 @@
+2014-10-02  Niels Möller  <nisse@lysator.liu.se>
+
+	* strndup.c (strndup): Fixed off-by-one error, and failure check.
+	Spotted by Avner BenHanoch.
+
 2008-08-26  Niels Möller  <nisse@lysator.liu.se>
 
 	* testsuite/Makefile.in (tags): Put TAGS file in the source

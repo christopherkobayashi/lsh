@@ -17,15 +17,15 @@ strndup (const char *s, size_t size)
   char *end = memchr(s, 0, size);
   
   if (end)
-    /* Length + 1 */
-    size = end - s + 1;
+    /* strlen, i.e., excluding the terminating NUL. */
+    size = end - s;
   
-  r = malloc(size);
+  r = malloc(size+1);
 
-  if (size)
+  if (r)
     {
-      memcpy(r, s, size-1);
-      r[size-1] = '\0';
+      memcpy(r, s, size);
+      r[size] = '\0';
     }
   return r;
 }

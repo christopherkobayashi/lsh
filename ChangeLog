@@ -1,3 +1,8 @@
+2014-10-02  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/client_x11.c (do_client_channel_x11_receive): Changed a
+	werror(...) message to debug(...).
+
 2013-09-17  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/testsuite/lsh-6-test (ALGORITHMS): Test both 3des-cbc and

@@ -184,7 +184,7 @@ do_client_channel_x11_receive(struct ssh_channel *s,
       /* Copy data to buffer */
       const uint8_t *buffer;
 
-      werror("client_x11.c: length = %i\n", length);
+      debug("client_x11.c: length = %i\n", length);
       /* The small initial window size should ensure that all the
 	 data fits. */
       lsh_string_write(self->buffer, self->i, length, data);

@@ -307,7 +307,10 @@ main (int argc, char **argv)
 	      wait_stdin_eof = 0;
 	      if (!wait_remote_eof)
 		break;
-	      if (shutdown (fd, SHUT_WR) < 0 && errno != ENOTCONN)
+	      /* If the server has closed the connection already, we
+		 get ENOTCONN on Linux, and ECONNRESET on BSD. */
+	      if (shutdown (fd, SHUT_WR) < 0
+		  && errno != ENOTCONN && errno != ECONNRESET)
 		die("shutdown failed: %s\n", strerror(errno));
 	    }
 	  else

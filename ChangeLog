@@ -1,3 +1,9 @@
+2014-10-06  Niels Möller  <nisse@lysator.liu.se>
+
+	Bug fix copied from master branch.
+	* src/testsuite/tcpconnect.c (main): Ignore ECONNRESET failure of
+	shutdown (happens on BSD).
+
 2014-01-13  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/client.c (make_client_session): Call dup on any stdio file

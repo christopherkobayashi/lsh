@@ -1,3 +1,8 @@
+2014-10-06  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/testsuite/tcpconnect.c (main): Ignore ECONNRESET failure of
+	shutdown (happens on BSD).
+
 2014-10-02  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/client_x11.c (do_client_channel_x11_receive): Changed a

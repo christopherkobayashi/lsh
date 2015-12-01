@@ -26,6 +26,8 @@
 
 #include "abstract_crypto.h"
 
+extern struct crypto_algorithm crypto_aes128_cbc_algorithm;
+extern struct crypto_algorithm crypto_aes128_ctr_algorithm;
 extern struct crypto_algorithm crypto_aes256_cbc_algorithm;
 extern struct crypto_algorithm crypto_aes256_ctr_algorithm;
 extern struct crypto_algorithm crypto_arcfour_algorithm;

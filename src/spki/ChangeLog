@@ -1,5 +1,8 @@
 2015-12-01  Niels Möller  <nisse@lysator.liu.se>
 
+	* testsuite/Makefile.am (check): Deleted useless setting of
+	LD_LIBRARY_PATH.
+
 	From Magnus Holmgren's debian patches:
 	* verify.c: Minimal nettle-3 patch, using des-compat.h.
 	(spki_verify_dsa): Update dsa_keypair_from_sexp_alist call.

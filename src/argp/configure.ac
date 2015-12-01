@@ -90,7 +90,7 @@ if test x$GCC = xyes ; then
   fi
   CFLAGS="$CFLAGS -Wall -W \
  -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes \
- -Waggregate-return \
+ -Waggregate-return -Wno-pointer-sign \
  -Wpointer-arith -Wbad-function-cast -Wnested-externs"
 fi
 

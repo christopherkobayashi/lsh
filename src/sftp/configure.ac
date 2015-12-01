@@ -314,7 +314,7 @@ if test x$GCC = xyes ; then
   else
     CFLAGS="$CFLAGS -ggdb3"
   fi
-  CFLAGS="$CFLAGS -Wall -W \
+  CFLAGS="$CFLAGS -Wall -W -Wno-pointer-sign\
  -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes \
  -Wpointer-arith -Wbad-function-cast -Wnested-externs -Wcast-align"
 fi

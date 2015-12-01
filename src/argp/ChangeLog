@@ -1,5 +1,7 @@
 2015-12-01  Niels Möller  <nisse@lysator.liu.se>
 
+	* configure.ac (CFLAGS): For gcc, add -Wno-pointer-sign.
+
 	* argp.h (ARGP_EI): Enforce __gnu_inline__ when needed.
 	* argp-fmtstream.h (ARGP_FS_EI): Likewise.
 

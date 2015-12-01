@@ -97,7 +97,7 @@ lsh_sexp_to_string(struct sexp_iterator *i, struct lsh_string **display)
 struct lsh_string *
 lsh_sexp_copy(struct sexp_iterator *i)
 {
-  unsigned length;
+  size_t length;
   const uint8_t *subexpr = sexp_iterator_subexpr(i, &length);
 
   return subexpr ? ssh_format("%ls", length, subexpr) : NULL;

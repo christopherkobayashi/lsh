@@ -312,7 +312,7 @@ do_cast128_decrypt(struct crypto_instance *s,
 }
 
 static struct crypto_instance *
-make_cast128_cbc_instance(struct crypto_algorithm *algorithm, int mode,
+make_cast128_cbc_instance(struct crypto_algorithm *algorithm UNUSED, int mode,
                           const uint8_t *key, const uint8_t *iv)
 {
   NEW(cast128_instance, self);
@@ -322,7 +322,7 @@ make_cast128_cbc_instance(struct crypto_algorithm *algorithm, int mode,
 			? do_cast128_encrypt
 			: do_cast128_decrypt);
 
-  cast128_set_key(&self->ctx.ctx, algorithm->key_size, key);
+  cast128_set_key(&self->ctx.ctx, key);
   CBC_SET_IV(&self->ctx, iv);
 
   return(&self->super);

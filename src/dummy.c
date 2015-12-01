@@ -41,84 +41,84 @@
 #include "lsh.h"
 
 /* Referenced by ssh_format.c */
-unsigned
+size_t
 nettle_mpz_sizeinbase_256_s(const mpz_t x UNUSED)
 { abort(); }
 
-unsigned
+size_t
 nettle_mpz_sizeinbase_256_u(const mpz_t x UNUSED)
 { abort(); }
 
 void
-cbc_encrypt(void *ctx UNUSED, nettle_crypt_func f UNUSED,
-	    unsigned block_size UNUSED, uint8_t *iv UNUSED,
-	    unsigned length UNUSED, uint8_t *dst UNUSED,
+cbc_encrypt(const void *ctx UNUSED, nettle_cipher_func *f UNUSED,
+	    size_t block_size UNUSED, uint8_t *iv UNUSED,
+	    size_t length UNUSED, uint8_t *dst UNUSED,
 	    const uint8_t *src UNUSED)
 { abort(); }
 
 void
-cbc_decrypt(void *ctx UNUSED, nettle_crypt_func f UNUSED,
-	    unsigned block_size UNUSED, uint8_t *iv UNUSED,
-	    unsigned length UNUSED, uint8_t *dst UNUSED,
+cbc_decrypt(const void *ctx UNUSED, nettle_cipher_func *f UNUSED,
+	    size_t block_size UNUSED, uint8_t *iv UNUSED,
+	    size_t length UNUSED, uint8_t *dst UNUSED,
 	    const uint8_t *src UNUSED)
 { abort(); }
 
 void
-ctr_crypt(void *ctx UNUSED, nettle_crypt_func f UNUSED,
-	  unsigned block_size UNUSED, uint8_t *iv UNUSED,
-	  unsigned length UNUSED, uint8_t *dst UNUSED,
+ctr_crypt(const void *ctx UNUSED, nettle_cipher_func *f UNUSED,
+	  size_t block_size UNUSED, uint8_t *iv UNUSED,
+	  size_t length UNUSED, uint8_t *dst UNUSED,
 	  const uint8_t *src UNUSED)
 { abort(); }
 
 void
 hmac_digest(const void *outer UNUSED, const void *inner UNUSED, void *state UNUSED,
 	    const struct nettle_hash *hash UNUSED,
-	    unsigned length UNUSED, uint8_t *digest UNUSED)
+	    size_t length UNUSED, uint8_t *digest UNUSED)
 { abort(); }
 
-unsigned
+size_t
 sexp_vformat(struct nettle_buffer *buffer UNUSED,
 	     const char *format UNUSED, va_list args UNUSED)
 { abort(); }
 
-unsigned
+size_t
 sexp_transport_vformat(struct nettle_buffer *buffer UNUSED,
 		       const char *format UNUSED, va_list args UNUSED)
 { abort(); }
 
 int
 sexp_transport_iterator_first(struct sexp_iterator *iterator UNUSED,
-			      unsigned length UNUSED, uint8_t *input UNUSED)
+			      size_t length UNUSED, uint8_t *input UNUSED)
 { abort(); }
 
 void
 nettle_buffer_init_size(struct nettle_buffer *buffer UNUSED,
-			unsigned length UNUSED, uint8_t *space UNUSED)
+			size_t length UNUSED, uint8_t *space UNUSED)
 			
 { abort(); }
 
 
 /* Referenced by lsh_string.c */
-uint8_t *
-memxor(uint8_t *dst UNUSED, const uint8_t *src UNUSED, size_t n UNUSED)
+void *
+memxor(void *dst UNUSED, const void *src UNUSED, size_t n UNUSED)
 { abort(); }
 
 void
-nettle_mpz_get_str_256(unsigned length UNUSED, uint8_t *s UNUSED, const mpz_t x UNUSED)
+nettle_mpz_get_str_256(size_t length UNUSED, uint8_t *s UNUSED, const mpz_t x UNUSED)
 { abort(); }
 
 void
 base64_encode_init(struct base64_encode_ctx *ctx UNUSED)
 { abort(); }
 
-unsigned
+size_t
 base64_encode_update(struct base64_encode_ctx *ctx UNUSED,
 		     uint8_t *dst UNUSED,
-		     unsigned length UNUSED,
+		     size_t length UNUSED,
 		     const uint8_t *src UNUSED)
 { abort(); }
 
-unsigned
+size_t
 base64_encode_final(struct base64_encode_ctx *ctx UNUSED,
 		    uint8_t *dst UNUSED)
 { abort(); }
@@ -129,9 +129,9 @@ base64_decode_init(struct base64_decode_ctx *ctx UNUSED)
 
 int
 base64_decode_update(struct base64_decode_ctx *ctx UNUSED,
-		     unsigned *dst_length UNUSED,
+		     size_t *dst_length UNUSED,
 		     uint8_t *dst UNUSED,
-		     unsigned src_length UNUSED,
+		     size_t src_length UNUSED,
 		     const uint8_t *src UNUSED)
 { abort(); }
 
@@ -142,7 +142,7 @@ base64_decode_final(struct base64_decode_ctx *ctx UNUSED)
 /* Referenced by parse.c */
 void
 nettle_mpz_set_str_256_s(mpz_t x UNUSED,
-			 unsigned length UNUSED, const uint8_t *s UNUSED)
+			 size_t length UNUSED, const uint8_t *s UNUSED)
 { abort(); }
 
 /* Referenced by werror.c */

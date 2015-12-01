@@ -35,7 +35,7 @@
 /* Wrapper for using lsh's randomness generator with nettle
  * functions. */
 void
-lsh_random(void *x, unsigned length, uint8_t *data)
+lsh_random(void *x, size_t length, uint8_t *data)
 {
   CAST_SUBTYPE(randomness, r, x);
   RANDOM(r, length, data);

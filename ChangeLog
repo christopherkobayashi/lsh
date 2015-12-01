@@ -1,3 +1,22 @@
+2015-12-01  Niels Möller  <nisse@lysator.liu.se>
+
+	Based on Magnus Holmgren's debian patches:
+
+	* src/crypto.c (make_cast128_cbc_instance): Dropped key_size
+	argument to cast128_set_key.
+	* src/dummy.c: Update dummy function to match argument and return
+	types of nettle-3.
+	* src/dsa.c: Minimal nettle-3 patch, using des-compat.h.
+	(make_dsa_verifier, make_dsa_signer): Update
+	dsa_keypair_from_sexp_alist call.
+	* src/lsh-keygen.c (dsa_generate_key): Use
+	dsa_compat_generate_keypair, and dsa-compat.h.
+	* src/lsh_string.c (lsh_string_format_sexp)
+	(lsh_string_base64_decode): Update to use size_t.
+	* src/sexp.c (lsh_sexp_copy): Likewise.
+	* src/randomness.c (lsh_random): Likewise.
+	* src/randomness.h (lsh_random): Update declaration.
+
 2014-10-06  Niels Möller  <nisse@lysator.liu.se>
 
 	Bug fix copied from master branch.

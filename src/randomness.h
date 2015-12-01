@@ -84,6 +84,6 @@ make_system_random(void);
 
 /* Randomness function matching nettle's expectations. */
 void
-lsh_random(void *x, unsigned length, uint8_t *data);
+lsh_random(void *x, size_t length, uint8_t *data);
 
 #endif /* LSH_RANDOMNESS_H_INCLUDED */

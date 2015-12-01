@@ -367,10 +367,10 @@ lsh_string_format_sexp(int transport, const char *format, ...)
 {
   struct lsh_string *s;
   va_list args;
-  unsigned length;
+  size_t length;
   struct nettle_buffer buffer;
 
-  unsigned (*vformat)(struct nettle_buffer *, const char *, va_list)
+  size_t (*vformat)(struct nettle_buffer *, const char *, va_list)
     = transport ? sexp_transport_vformat : sexp_vformat;
   
   va_start(args, format);
@@ -415,7 +415,7 @@ int
 lsh_string_base64_decode(struct lsh_string *s)
 {
   struct base64_decode_ctx ctx;
-  uint32_t done = s->length;
+  size_t done = s->length;
 
   base64_decode_init(&ctx);
 

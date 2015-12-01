@@ -39,7 +39,7 @@
 #include <unistd.h>
 #endif
 
-#include <nettle/dsa.h>
+#include <nettle/dsa-compat.h>
 #include <nettle/rsa.h>
 
 #include "crypto.h"
@@ -214,7 +214,7 @@ dsa_generate_key(struct randomness *r, unsigned level)
 
   assert(r->quality == RANDOM_GOOD);
   
-  if (dsa_generate_keypair(&public, &private,
+  if (dsa_compat_generate_keypair(&public, &private,
 			   r, lsh_random,
 			   NULL, progress,
 			   512 + 64 * level, DSA_SHA1_Q_BITS))

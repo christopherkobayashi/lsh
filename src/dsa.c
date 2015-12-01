@@ -28,7 +28,7 @@
 #include <assert.h>
 
 #include <nettle/bignum.h>
-#include <nettle/dsa.h>
+#include <nettle/dsa-compat.h>
 #include <nettle/sexp.h>
 #include <nettle/sha.h>
 
@@ -313,7 +313,7 @@ make_dsa_verifier(struct signature_algorithm *self UNUSED,
   NEW(dsa_verifier, res);
   init_dsa_verifier(res);
 
-  if (dsa_keypair_from_sexp_alist(&res->key, NULL, DSA_MAX_BITS, DSA_SHA1_Q_BITS, i))
+  if (dsa_keypair_from_sexp_alist((struct dsa_params *)&res->key, res->key.y, NULL, DSA_MAX_BITS, DSA_SHA1_Q_BITS, i))
     return &res->super;
 
   KILL(res);
@@ -332,7 +332,7 @@ make_dsa_signer(struct signature_algorithm *c,
   
   dsa_private_key_init(&res->key);
 
-  if (dsa_keypair_from_sexp_alist(&verifier->key, &res->key, DSA_MAX_BITS, DSA_SHA1_Q_BITS, i))
+  if (dsa_keypair_from_sexp_alist((struct dsa_params *)&verifier->key, verifier->key.y, res->key.x, DSA_MAX_BITS, DSA_SHA1_Q_BITS, i))
     {
       res->random = self->random;
       res->verifier = verifier;

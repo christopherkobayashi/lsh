@@ -1,3 +1,8 @@
+2015-12-01  Niels Möller  <nisse@lysator.liu.se>
+
+	* argp.h (ARGP_EI): Enforce __gnu_inline__ when needed.
+	* argp-fmtstream.h (ARGP_FS_EI): Likewise.
+
 2014-10-02  Niels Möller  <nisse@lysator.liu.se>
 
 	Bug fix copied from master branch.

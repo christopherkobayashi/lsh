@@ -48,7 +48,7 @@
 struct alist *
 all_symmetric_algorithms()
 {
-  return make_alist(11
+  return make_alist(12
 #if WITH_ZLIB
 		    +1
 #endif
@@ -56,10 +56,11 @@ all_symmetric_algorithms()
 		    ATOM_ARCFOUR, &crypto_arcfour_algorithm,
 		    ATOM_BLOWFISH_CBC, &crypto_blowfish_cbc_algorithm,
 		    ATOM_TWOFISH_CBC, &crypto_twofish256_cbc_algorithm,
+                    ATOM_AES128_CBC, &crypto_aes128_cbc_algorithm,
+                    ATOM_AES128_CTR, &crypto_aes128_ctr_algorithm,
                     ATOM_AES256_CBC, &crypto_aes256_cbc_algorithm,
                     ATOM_AES256_CTR, &crypto_aes256_ctr_algorithm,
 		    ATOM_SERPENT256_CBC, &crypto_serpent256_cbc_algorithm,
-		    ATOM_SERPENT_CBC_LOCAL, &crypto_serpent256_cbc_algorithm,
 		    ATOM_3DES_CBC, &crypto_des3_cbc_algorithm,
 		    ATOM_CAST128_CBC, &crypto_cast128_cbc_algorithm,
 		    ATOM_HMAC_SHA1,
@@ -89,15 +90,14 @@ struct int_list *
 filter_algorithms_l(struct alist *algorithms, unsigned n, ...);
 
 /* Includes only reasonably old algorithms and well studied
- * algorithms. */
+ * algorithms. 3des-cbc is the original REQUIRED algorithm. */
 static struct int_list *
 default_crypto_algorithms(struct alist *algorithms)
 {
-  return filter_algorithms_l(algorithms, 4,
-			     ATOM_AES256_CBC,
-			     ATOM_3DES_CBC,
-			     ATOM_BLOWFISH_CBC,
-			     ATOM_ARCFOUR, -1);
+  return filter_algorithms_l(algorithms, 3,
+                             ATOM_AES256_CTR,
+                             ATOM_AES128_CTR,
+			     ATOM_3DES_CBC, -1);
 }
 
 /* Includes all supported algorithms, except none. In effect, the
@@ -105,14 +105,15 @@ default_crypto_algorithms(struct alist *algorithms)
 static struct int_list *
 all_crypto_algorithms(struct alist *algorithms)
 {
-  return filter_algorithms_l(algorithms, 9,
+  return filter_algorithms_l(algorithms, 10,
                              ATOM_AES256_CBC,
                              ATOM_AES256_CTR,
+                             ATOM_AES128_CBC,
+                             ATOM_AES128_CTR,
 			     ATOM_3DES_CBC,
 			     ATOM_TWOFISH_CBC, 
 			     ATOM_CAST128_CBC,
 			     ATOM_SERPENT256_CBC,
-			     ATOM_SERPENT_CBC_LOCAL,
 			     ATOM_BLOWFISH_CBC,
 			     ATOM_ARCFOUR, -1);
 }
@@ -175,12 +176,18 @@ lookup_crypto(struct alist *algorithms, const char *name, struct crypto_algorith
     atom = ATOM_TWOFISH_CBC;
   else if (strcasecmp_list(name, "blowfish-cbc", "blowfish", NULL))
     atom = ATOM_BLOWFISH_CBC;
-  else if (strcasecmp_list(name, "3des-cbc", "3des", NULL))
+  else if (strcasecmp_list(name, "3des-ctr", "3des", NULL))
+    atom = ATOM_3DES_CTR;
+  else if (strcasecmp_list(name, "3des-cbc", NULL))
     atom = ATOM_3DES_CBC;
-  else if (strcasecmp_list(name, "aes256-cbc", "aes-cbc", "aes", "rijndael", NULL))
-    atom = ATOM_AES256_CBC;
-  else if (strcasecmp_list(name, "aes256-ctr", "aes-ctr", NULL))
+  else if (strcasecmp_list(name, "aes256-ctr", "aes-ctr", "aes", NULL))
     atom = ATOM_AES256_CTR;
+  else if (strcasecmp_list(name, "aes256-cbc", "aes-cbc", NULL))
+    atom = ATOM_AES256_CBC;
+  else if (strcasecmp_list(name, "aes128-ctr", "aes128",  NULL))
+    atom = ATOM_AES128_CTR;
+  else if (strcasecmp_list(name, "aes128-cbc", NULL))
+    atom = ATOM_AES128_CBC;
   else if (strcasecmp_list(name, "serpent256-cbc",
 			   "serpent-cbc", "serpent", NULL))
     atom = ATOM_SERPENT256_CBC;

@@ -1,5 +1,20 @@
 2015-12-01  Niels Möller  <nisse@lysator.liu.se>
 
+	* src/algorithms.c (all_symmetric_algorithms): Add support for
+	aes128-cbc and aes128-ctr. Drop support for
+	"serpent-cbc@lysator.liu.se" alias.
+	(default_crypto_algorithms): New default list, only aes256-ctr,
+	aes128-ctr, and 3des-cbc.
+	(all_crypto_algorithms): Added aes128-ctr and aes128-cbc. Deleted
+	"serpent-cbc@lysator.liu.se" alias.
+	(lookup_crypto): When both foo-cbc and foo-ctr are implemented,
+	let "foo" be a shorthand for foo-ctr. Drop support for the
+	"rijndael" alias.
+
+	* src/atoms.in: Deleted "serpent-cbc@lysator.liu.se" name.
+	* src/testsuite/lsh-6-test (ALGORITHMS): Update list of tested
+	algorithms accordingly.
+
 	* src/crypto.c: (crypto_aes128_cbc_algorithm)
 	(crypto_aes128_ctr_algorithm): Add algorithms.
 

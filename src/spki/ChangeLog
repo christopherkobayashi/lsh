@@ -1,3 +1,10 @@
+2015-12-01  Niels Möller  <nisse@lysator.liu.se>
+
+	From Magnus Holmgren's debian patches:
+	* verify.c: Minimal nettle-3 patch, using des-compat.h.
+	(spki_verify_dsa): Update dsa_keypair_from_sexp_alist call.
+
+
 2013-06-15  Niels Möller  <nisse@lysator.liu.se>
 
 	* configure.ac: Use AC_CONFIG_HEADER, not AM_CONFIG_HEADER.

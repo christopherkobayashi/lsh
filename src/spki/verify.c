@@ -25,7 +25,7 @@
 #endif
 
 #include <nettle/bignum.h>
-#include <nettle/dsa.h>
+#include <nettle/dsa-compat.h>
 #include <nettle/rsa.h>
 
 #include "certificate.h"
@@ -74,7 +74,7 @@ spki_verify_dsa(const uint8_t *digest,
   dsa_public_key_init(&dsa);
   dsa_signature_init(&rs);
 
-  res = (dsa_keypair_from_sexp_alist(&dsa, NULL,
+  res = (dsa_keypair_from_sexp_alist((struct dsa_params *)&dsa, dsa.y, NULL,
 				     RSA_KEYSIZE_LIMIT, DSA_SHA1_Q_BITS, &key->sexp)
 	 && spki_parse_type(key)
 	 && dsa_signature_from_sexp(&rs, &signature->sexp, DSA_SHA1_Q_BITS)

@@ -231,7 +231,7 @@ void
 lsh_string_crypt(struct lsh_string *dst, uint32_t di,
 		 const struct lsh_string *src, uint32_t si,
 		 uint32_t length,
-		 nettle_crypt_func f, void *ctx)
+		 nettle_crypt_func *f, void *ctx)
 {
   ASSERT_ROOM(dst, di, length);
   ASSERT_ROOM(src, si, length);
@@ -247,7 +247,7 @@ lsh_string_cbc_encrypt(struct lsh_string *dst, uint32_t di,
 		       const struct lsh_string *src, uint32_t si,
 		       uint32_t length,
 		       uint32_t block_size, uint8_t *iv,
-		       nettle_crypt_func f, void *ctx)
+		       nettle_cipher_func *f, void *ctx)
 {
   ASSERT_ROOM(dst, di, length);
   ASSERT_ROOM(src, si, length);
@@ -265,7 +265,7 @@ lsh_string_cbc_decrypt(struct lsh_string *dst, uint32_t di,
 		       const struct lsh_string *src, uint32_t si,
 		       uint32_t length,
 		       uint32_t block_size, uint8_t *iv,
-		       nettle_crypt_func f, void *ctx)
+		       nettle_cipher_func *f, void *ctx)
 {
   ASSERT_ROOM(dst, di, length);
   ASSERT_ROOM(src, si, length);
@@ -283,7 +283,7 @@ lsh_string_ctr_crypt(struct lsh_string *dst, uint32_t di,
 		     const struct lsh_string *src, uint32_t si,
 		     uint32_t length,
 		     uint32_t block_size, uint8_t *iv,
-		     nettle_crypt_func f, void *ctx)
+		     nettle_cipher_func *f, void *ctx)
 {
   ASSERT_ROOM(dst, di, length);
   ASSERT_ROOM(src, si, length);

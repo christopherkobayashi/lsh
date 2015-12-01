@@ -1,7 +1,13 @@
 2015-12-01  Niels Möller  <nisse@lysator.liu.se>
 
-	Based on Magnus Holmgren's debian patches:
+	* src/lsh_string.c (lsh_string_crypt): Use nettle_crypt_func *f,
+	not nettle_crypt_func f.
+	(lsh_string_cbc_encrypt, lsh_string_cbc_decrypt)
+	(lsh_string_ctr_crypt): Use nettle_cipher_func *f.
+	* src/crypto.c: Updated casts in callers.
+	* src/lsh_string.h: Updated prototypes.
 
+	Based on Magnus Holmgren's debian patches:
 	* src/crypto.c (make_cast128_cbc_instance): Dropped key_size
 	argument to cast128_set_key.
 	* src/dummy.c: Update dummy function to match argument and return

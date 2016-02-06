@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl Note that version string is included in the handshake message, and
 dnl must therefore not contain any space.
-AC_INIT([lsh], [2.9.1-exp], [bug-lsh@gnu.org]) 
+AC_INIT([lsh], [2.9.2-exp], [bug-lsh@gnu.org])
 AC_PREREQ(2.52)
 AC_CONFIG_SRCDIR([src/lsh.c])
 # Needed to stop autoconf from looking for files in parent directories.
@@ -422,9 +422,9 @@ AC_CHECK_LIB(gmp, __gmpz_getlimbn,,
 
 LSH_RPATH_FIX
 
-AC_CHECK_LIB(hogweed, nettle_dsa_sha1_sign, [true],
+AC_CHECK_LIB(hogweed, nettle_dsa_params_init, [true],
     [AC_MSG_ERROR(
-    [Nettle library not found; needs version 2.2 or later. See http://www.lysator.liu.se/~nisse/nettle/.])], [-lnettle -lgmp])
+    [Nettle library not found; needs version 3.0 or later. See http://www.lysator.liu.se/~nisse/nettle/.])], [-lnettle -lgmp])
 
 LSH_RPATH_FIX
 

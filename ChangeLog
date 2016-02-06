@@ -1,5 +1,8 @@
 2016-02-06  Niels Möller  <nisse@lysator.liu.se>
 
+	* configure.ac: Update nettle configure test to require nettle-3
+	or later. Updated version to 2.9.2-exp.
+
 	Nettle-3 update.
 	* lsh_string.h: nettle_crypt_func --> nettle_cipher_func.
 	* src/crypto.c: nettle_crypt_func --> nettle_cipher_func.

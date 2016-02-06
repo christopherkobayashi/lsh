@@ -70,22 +70,26 @@ spki_verify_dsa_sha1(const uint8_t *digest,
 		     struct spki_iterator *key,
 		     struct spki_iterator *signature)
 {
-  struct dsa_public_key dsa;
+  struct dsa_params dsa_params;
+  mpz_t dsa_pub;
   struct dsa_signature rs;
   int res;
 
-  dsa_public_key_init(&dsa);
+  dsa_params_init(&dsa_params);
+  mpz_init(dsa_pub);
   dsa_signature_init(&rs);
 
-  res = (dsa_keypair_from_sexp_alist(&dsa, NULL,
+  res = (dsa_keypair_from_sexp_alist(&dsa_params, dsa_pub, NULL,
 				     DSA_SHA1_KEYSIZE_LIMIT,
 				     DSA_SHA1_Q_BITS, &key->sexp)
 	 && spki_parse_end(key)
 	 && dsa_signature_from_sexp(&rs, &signature->sexp, DSA_SHA1_Q_BITS)
-	 && dsa_sha1_verify_digest(&dsa, digest, &rs));
+	 && dsa_verify(&dsa_params, dsa_pub,
+		       SHA1_DIGEST_SIZE, digest, &rs));
 
   dsa_signature_clear(&rs);
-  dsa_public_key_clear(&dsa);
+  mpz_clear(dsa_pub);
+  dsa_params_clear(&dsa_params);
 
   return res;    
 }
@@ -95,23 +99,27 @@ spki_verify_dsa_sha256(const uint8_t *digest,
 		       struct spki_iterator *key,
 		       struct spki_iterator *signature)
 {
-  struct dsa_public_key dsa;
+  struct dsa_params dsa_params;
+  mpz_t dsa_pub;
   struct dsa_signature rs;
   int res;
 
-  dsa_public_key_init(&dsa);
+  dsa_params_init(&dsa_params);
+  mpz_init(dsa_pub);
   dsa_signature_init(&rs);
 
-  res = (dsa_keypair_from_sexp_alist(&dsa, NULL,
+  res = (dsa_keypair_from_sexp_alist(&dsa_params, dsa_pub, NULL,
 				     DSA_SHA256_KEYSIZE_LIMIT,
 				     DSA_SHA256_Q_BITS, &key->sexp)
 	 && spki_parse_end(key)
 	 && dsa_signature_from_sexp(&rs, &signature->sexp,
 				    DSA_SHA256_Q_BITS)
-	 && dsa_sha256_verify_digest(&dsa, digest, &rs));
+	 && dsa_verify(&dsa_params, dsa_pub,
+		       SHA256_DIGEST_SIZE, digest, &rs));
 
   dsa_signature_clear(&rs);
-  dsa_public_key_clear(&dsa);
+  mpz_clear(dsa_pub);
+  dsa_params_clear(&dsa_params);
 
   return res;    
 }

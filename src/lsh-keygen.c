@@ -476,54 +476,64 @@ progress(void *ctx UNUSED, int c)
 static struct lsh_string *
 dsa_sha1_generate_key(unsigned bits)
 {
-  struct dsa_public_key public;
-  struct dsa_private_key private;
+  struct dsa_params params;
   struct lsh_string *key = NULL;
 
-  dsa_public_key_init(&public);
-  dsa_private_key_init(&private);
+  dsa_params_init(&params);
 
-  if (dsa_generate_keypair(&public, &private,
-			   NULL, lsh_random,
-			   NULL, progress,
-			   bits, 160))
+  if (dsa_generate_params(&params,
+			  NULL, lsh_random,
+			  NULL, progress,
+			  bits, 160))
     {
+      mpz_t public;
+      mpz_t private;
+      mpz_init(public);
+      mpz_init(private);
+
+      dsa_generate_keypair(&params, public, private,
+			   NULL, lsh_random);
       key =
 	lsh_string_format_sexp(0,
 			       "(private-key(dsa(p%b)(q%b)(g%b)(y%b)(x%b)))",
-			       public.p, public.q, public.g, public.y,
-			       private.x);
+			       params.p, params.q, params.g, public, private);
+      mpz_clear(public);
+      mpz_clear(private);
     }
 
-  dsa_public_key_clear(&public);
-  dsa_private_key_clear(&private);
+  dsa_params_clear(&params);
   return key;
 }
 
 static struct lsh_string *
 dsa_sha256_generate_key(unsigned bits)
 {
-  struct dsa_public_key public;
-  struct dsa_private_key private;
+  struct dsa_params params;
   struct lsh_string *key = NULL;
 
-  dsa_public_key_init(&public);
-  dsa_private_key_init(&private);
+  dsa_params_init(&params);
 
-  if (dsa_generate_keypair(&public, &private,
-			   NULL, lsh_random,
-			   NULL, progress,
-			   bits, 256))
+  if (dsa_generate_params(&params,
+			  NULL, lsh_random,
+			  NULL, progress,
+			  bits, 256))
     {
+      mpz_t public;
+      mpz_t private;
+      mpz_init(public);
+      mpz_init(private);
+
+      dsa_generate_keypair(&params, public, private,
+			   NULL, lsh_random);
       key =
 	lsh_string_format_sexp(0,
 			       "(private-key(dsa-sha256(p%b)(q%b)(g%b)(y%b)(x%b)))",
-			       public.p, public.q, public.g, public.y,
-			       private.x);
+			       params.p, params.q, params.g, public, private);
+      mpz_clear(public);
+      mpz_clear(private);
     }
 
-  dsa_public_key_clear(&public);
-  dsa_private_key_clear(&private);
+  dsa_params_clear(&params);
   return key;
 }
 

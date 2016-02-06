@@ -76,12 +76,12 @@ hmac_digest(const void *outer UNUSED, const void *inner UNUSED, void *state UNUS
 	    unsigned length UNUSED, uint8_t *digest UNUSED)
 { abort(); }
 
-unsigned
+size_t
 sexp_vformat(struct nettle_buffer *buffer UNUSED,
 	     const char *format UNUSED, va_list args UNUSED)
 { abort(); }
 
-unsigned
+size_t
 sexp_transport_vformat(struct nettle_buffer *buffer UNUSED,
 		       const char *format UNUSED, va_list args UNUSED)
 { abort(); }

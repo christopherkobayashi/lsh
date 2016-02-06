@@ -458,7 +458,7 @@ lsh_string_cbc_encrypt(struct lsh_string *dst, uint32_t di,
 		       const struct lsh_string *src, uint32_t si,
 		       uint32_t length,
 		       uint32_t block_size, uint8_t *iv,
-		       nettle_crypt_func f, void *ctx)
+		       nettle_cipher_func f, void *ctx)
 {
   ASSERT_ROOM(dst, di, length);
   ASSERT_ROOM(src, si, length);
@@ -476,7 +476,7 @@ lsh_string_cbc_decrypt(struct lsh_string *dst, uint32_t di,
 		       const struct lsh_string *src, uint32_t si,
 		       uint32_t length,
 		       uint32_t block_size, uint8_t *iv,
-		       nettle_crypt_func f, void *ctx)
+		       nettle_cipher_func f, void *ctx)
 {
   ASSERT_ROOM(dst, di, length);
   ASSERT_ROOM(src, si, length);
@@ -494,7 +494,7 @@ lsh_string_ctr_crypt(struct lsh_string *dst, uint32_t di,
 		     const struct lsh_string *src, uint32_t si,
 		     uint32_t length,
 		     uint32_t block_size, uint8_t *iv,
-		     nettle_crypt_func f, void *ctx)
+		     nettle_cipher_func f, void *ctx)
 {
   ASSERT_ROOM(dst, di, length);
   ASSERT_ROOM(src, si, length);
@@ -545,7 +545,7 @@ lsh_string_format_sexp(int transport, const char *format, ...)
   unsigned length;
   struct nettle_buffer buffer;
 
-  unsigned (*vformat)(struct nettle_buffer *, const char *, va_list)
+  size_t (*vformat)(struct nettle_buffer *, const char *, va_list)
     = transport ? sexp_transport_vformat : sexp_vformat;
   
   va_start(args, format);
@@ -570,7 +570,7 @@ int
 lsh_string_base64_decode(struct lsh_string *s)
 {
   struct base64_decode_ctx ctx;
-  uint32_t done = s->length;
+  size_t done = s->length;
 
   base64_decode_init(&ctx);
 

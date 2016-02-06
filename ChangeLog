@@ -1,3 +1,20 @@
+2016-02-06  Niels Möller  <nisse@lysator.liu.se>
+
+	Nettle-3 update.
+	* lsh_string.h: nettle_crypt_func --> nettle_cipher_func.
+	* src/crypto.c: nettle_crypt_func --> nettle_cipher_func.
+	(make_cast128_cbc_instance): No key_size argument to
+	cast128_set_key.
+	* src/dsa.c: Update to new DSA interface.
+	* src/lsh-keygen.c (dsa_sha1_generate_key)
+	(dsa_sha256_generate_key): Update to new DSA interface.
+	* src/dummy.c: unsigned --> size_t.
+	* src/randomness.h: unsigned --> size_t.
+	* src/unix_random.c: unsigned --> size_t.
+	* src/testsuite/testutils.c: unsigned --> size_t.
+	* src/lsh_string.c: unsigned --> size_t, nettle_crypt_func -->
+	nettle_cipher_func,
+
 2014-10-06  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/testsuite/tcpconnect.c (main): Ignore ECONNRESET failure of

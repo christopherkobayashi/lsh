@@ -62,6 +62,6 @@ random_init_system(void);
 
 /* Randomness function matching nettle's expectations. */
 void
-lsh_random(void *ctx, unsigned length, uint8_t *data);
+lsh_random(void *ctx, size_t length, uint8_t *data);
 
 #endif /* LSH_RANDOMNESS_H_INCLUDED */

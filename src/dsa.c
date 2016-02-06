@@ -64,8 +64,9 @@
      (name dsa_verifier)
      (super verifier)
      (vars
-       (key indirect-special "struct dsa_public_key"
-            #f dsa_public_key_clear)))
+       (params indirect-special "struct dsa_params"
+            #f dsa_params_clear)
+       (key bignum)))
 */
 
 /* GABA:
@@ -74,8 +75,7 @@
      (super signer)
      (vars
        (verifier object dsa_verifier)
-       (key indirect-special "struct dsa_private_key"
-            #f dsa_private_key_clear)))
+       (key bignum)))
 */
 
 static int
@@ -87,6 +87,7 @@ do_dsa_verify(struct verifier *c, int algorithm,
 {
   CAST(dsa_verifier, self, c);
   struct sha1_ctx hash;
+  uint8_t digest[SHA1_DIGEST_SIZE];
 
   struct simple_buffer buffer;
 
@@ -148,8 +149,8 @@ do_dsa_verify(struct verifier *c, int algorithm,
 
   sha1_init(&hash);
   sha1_update(&hash, length, msg);
-  
-  res = dsa_sha1_verify(&self->key, &hash, &sv);
+  sha1_digest(&hash, sizeof(digest), digest);
+  res = dsa_verify(&self->params, self->key, sizeof(digest), digest, &sv);
  fail:
 
   dsa_signature_clear(&sv);
@@ -164,8 +165,8 @@ do_dsa_public_key(struct verifier *s)
   CAST(dsa_verifier, self, s);
   return ssh_format("%a%n%n%n%n",
 		    ATOM_SSH_DSS,
-		    self->key.p, self->key.q,
-		    self->key.g, self->key.y);
+		    self->params.p, self->params.q,
+		    self->params.g, self->key);
 }
 
 /* FIXME: Should maybe switch to the name "dsa-sha1". Not sure what we
@@ -179,16 +180,16 @@ do_dsa_public_spki_key(struct verifier *s, int transport)
   return lsh_string_format_sexp(transport,
 				"(%0s(%0s(%0s%b)(%0s%b)(%0s%b)(%0s%b)))",
 				"public-key",  "dsa",
-				"p", self->key.p,
-				"q", self->key.q,
-				"g", self->key.g,
-				"y", self->key.y);
+				"p", self->params.p,
+				"q", self->params.q,
+				"g", self->params.g,
+				"y", self->key);
 }
 
 static void
 init_dsa_verifier(struct dsa_verifier *self)
 {
-  dsa_public_key_init(&self->key);
+  dsa_params_init(&self->params);
 
   self->super.verify = do_dsa_verify;
   self->super.public_spki_key = do_dsa_public_spki_key;
@@ -204,18 +205,18 @@ parse_ssh_dss_public(struct simple_buffer *buffer)
   NEW(dsa_verifier, res);
   init_dsa_verifier(res);
 
-  if (parse_bignum(buffer, res->key.p, DSA_SHA1_MAX_OCTETS)
-      && (mpz_sgn(res->key.p) == 1)
-      && parse_bignum(buffer, res->key.q, DSA_SHA1_Q_OCTETS)
-      && (mpz_sgn(res->key.q) == 1)
-      && mpz_sizeinbase(res->key.q, 2) == DSA_SHA1_Q_BITS
-      && (mpz_cmp(res->key.q, res->key.p) < 0) /* q < p */ 
-      && parse_bignum(buffer, res->key.g, DSA_SHA1_MAX_OCTETS)
-      && (mpz_sgn(res->key.g) == 1)
-      && (mpz_cmp(res->key.g, res->key.p) < 0) /* g < p */ 
-      && parse_bignum(buffer, res->key.y, DSA_SHA1_MAX_OCTETS) 
-      && (mpz_sgn(res->key.y) == 1)
-      && (mpz_cmp(res->key.y, res->key.p) < 0) /* y < p */
+  if (parse_bignum(buffer, res->params.p, DSA_SHA1_MAX_OCTETS)
+      && (mpz_sgn(res->params.p) == 1)
+      && parse_bignum(buffer, res->params.q, DSA_SHA1_Q_OCTETS)
+      && (mpz_sgn(res->params.q) == 1)
+      && mpz_sizeinbase(res->params.q, 2) == DSA_SHA1_Q_BITS
+      && (mpz_cmp(res->params.q, res->params.p) < 0) /* q < p */ 
+      && parse_bignum(buffer, res->params.g, DSA_SHA1_MAX_OCTETS)
+      && (mpz_sgn(res->params.g) == 1)
+      && (mpz_cmp(res->params.g, res->params.p) < 0) /* g < p */ 
+      && parse_bignum(buffer, res->key, DSA_SHA1_MAX_OCTETS) 
+      && (mpz_sgn(res->key) == 1)
+      && (mpz_cmp(res->key, res->params.p) < 0) /* y < p */
       && parse_eod(buffer))
     
     return &res->super;
@@ -249,6 +250,7 @@ do_dsa_sign(struct signer *c,
   CAST(dsa_signer, self, c);
   struct dsa_signature sv;
   struct sha1_ctx hash;
+  uint8_t digest[SHA1_DIGEST_SIZE];
   struct lsh_string *signature;
 
   trace("do_dsa_sign: Signing according to %a\n", algorithm);
@@ -256,9 +258,10 @@ do_dsa_sign(struct signer *c,
   dsa_signature_init(&sv);
   sha1_init(&hash);
   sha1_update(&hash, msg_length, msg);
+  sha1_digest(&hash, sizeof(digest), digest);
 
-  if (dsa_sha1_sign(&self->verifier->key, &self->key,
-		NULL, lsh_random, &hash, &sv))
+  if (dsa_sign(&self->verifier->params, self->key,
+	       NULL, lsh_random, sizeof(digest), digest, &sv))
     /* Build signature */
     switch (algorithm)
       {
@@ -310,7 +313,7 @@ make_dsa_verifier(struct signature_algorithm *self UNUSED,
   NEW(dsa_verifier, res);
   init_dsa_verifier(res);
 
-  if (dsa_keypair_from_sexp_alist(&res->key, NULL,
+  if (dsa_keypair_from_sexp_alist(&res->params, res->key, NULL,
 				  DSA_SHA1_MAX_BITS, DSA_SHA1_Q_BITS,
 				  i))
     return &res->super;
@@ -328,9 +331,7 @@ make_dsa_signer(struct signature_algorithm *self UNUSED,
 
   init_dsa_verifier(verifier);
   
-  dsa_private_key_init(&res->key);
-
-  if (dsa_keypair_from_sexp_alist(&verifier->key, &res->key,
+  if (dsa_keypair_from_sexp_alist(&verifier->params, verifier->key, res->key,
 				  DSA_SHA1_MAX_BITS, DSA_SHA1_Q_BITS,
 				  i))
     {
@@ -375,6 +376,7 @@ do_dsa_sha256_verify(struct verifier *c, int algorithm,
 {
   CAST(dsa_verifier, self, c);
   struct sha256_ctx hash;
+  uint8_t digest[SHA256_DIGEST_SIZE];
 
   struct simple_buffer buffer;
 
@@ -411,8 +413,9 @@ do_dsa_sha256_verify(struct verifier *c, int algorithm,
 
   sha256_init(&hash);
   sha256_update(&hash, length, msg);
+  sha256_digest(&hash, sizeof(digest), digest);
   
-  res = dsa_sha256_verify(&self->key, &hash, &sv);
+  res = dsa_verify(&self->params, self->key, sizeof(digest), digest, &sv);
  fail:
 
   dsa_signature_clear(&sv);
@@ -427,8 +430,8 @@ do_dsa_sha256_public_key(struct verifier *s)
   CAST(dsa_verifier, self, s);
   return ssh_format("%a%n%n%n%n",
 		    ATOM_SSH_DSA,
-		    self->key.p, self->key.q,
-		    self->key.g, self->key.y);
+		    self->params.p, self->params.q,
+		    self->params.g, self->key);
 }
 
 static struct lsh_string *
@@ -439,23 +442,23 @@ do_dsa_sha256_public_spki_key(struct verifier *s, int transport)
   return lsh_string_format_sexp(transport,
 				"(%0s(%0s(%0s%b)(%0s%b)(%0s%b)(%0s%b)))",
 				"public-key",  "dsa-sha256",
-				"p", self->key.p,
-				"q", self->key.q,
-				"g", self->key.g,
-				"y", self->key.y);
+				"p", self->params.p,
+				"q", self->params.q,
+				"g", self->params.g,
+				"y", self->key);
 }
 
 static void
 init_dsa_sha256_verifier(struct dsa_verifier *self)
 {
-  dsa_public_key_init(&self->key);
+  dsa_params_init(&self->params);
 
   self->super.verify = do_dsa_sha256_verify;
   self->super.public_spki_key = do_dsa_sha256_public_spki_key;
   self->super.public_key = do_dsa_sha256_public_key;
 }
 
-
+/* FIXME: Duplicated code with plain ssh_dss. */
 /* Alternative constructor using a key of type ssh-dsa-sha256, when
  * the atom "ssh-dss" is already read from the buffer. */
 struct verifier *
@@ -464,18 +467,18 @@ parse_ssh_dsa_sha256_public(struct simple_buffer *buffer)
   NEW(dsa_verifier, res);
   init_dsa_verifier(res);
 
-  if (parse_bignum(buffer, res->key.p, DSA_SHA256_MAX_OCTETS)
-      && (mpz_sgn(res->key.p) == 1)
-      && parse_bignum(buffer, res->key.q, DSA_SHA256_Q_OCTETS)
-      && (mpz_sgn(res->key.q) == 1)
-      && mpz_sizeinbase(res->key.q, 2) == DSA_SHA256_Q_BITS
-      && (mpz_cmp(res->key.q, res->key.p) < 0) /* q < p */ 
-      && parse_bignum(buffer, res->key.g, DSA_SHA256_MAX_OCTETS)
-      && (mpz_sgn(res->key.g) == 1)
-      && (mpz_cmp(res->key.g, res->key.p) < 0) /* g < p */ 
-      && parse_bignum(buffer, res->key.y, DSA_SHA256_MAX_OCTETS) 
-      && (mpz_sgn(res->key.y) == 1)
-      && (mpz_cmp(res->key.y, res->key.p) < 0) /* y < p */
+  if (parse_bignum(buffer, res->params.p, DSA_SHA256_MAX_OCTETS)
+      && (mpz_sgn(res->params.p) == 1)
+      && parse_bignum(buffer, res->params.q, DSA_SHA256_Q_OCTETS)
+      && (mpz_sgn(res->params.q) == 1)
+      && mpz_sizeinbase(res->params.q, 2) == DSA_SHA256_Q_BITS
+      && (mpz_cmp(res->params.q, res->params.p) < 0) /* q < p */ 
+      && parse_bignum(buffer, res->params.g, DSA_SHA256_MAX_OCTETS)
+      && (mpz_sgn(res->params.g) == 1)
+      && (mpz_cmp(res->params.g, res->params.p) < 0) /* g < p */ 
+      && parse_bignum(buffer, res->key, DSA_SHA256_MAX_OCTETS) 
+      && (mpz_sgn(res->key) == 1)
+      && (mpz_cmp(res->key, res->params.p) < 0) /* y < p */
       && parse_eod(buffer))
     
     return &res->super;
@@ -499,6 +502,7 @@ do_dsa_sha256_sign(struct signer *c,
   CAST(dsa_signer, self, c);
   struct dsa_signature sv;
   struct sha256_ctx hash;
+  uint8_t digest[SHA256_DIGEST_SIZE];
   struct lsh_string *signature;
 
   trace("do_dsa_sign: Signing according to %a\n", algorithm);
@@ -506,9 +510,10 @@ do_dsa_sha256_sign(struct signer *c,
   dsa_signature_init(&sv);
   sha256_init(&hash);
   sha256_update(&hash, msg_length, msg);
+  sha256_digest(&hash, sizeof(digest), digest);
 
-  if (dsa_sha256_sign(&self->verifier->key, &self->key,
-		      NULL, lsh_random, &hash, &sv))
+  if (dsa_sign(&self->verifier->params, self->key,
+	       NULL, lsh_random, sizeof(digest), digest, &sv))
     /* Build signature */
     switch (algorithm)
       {
@@ -554,7 +559,7 @@ make_dsa_sha256_verifier(struct signature_algorithm *self UNUSED,
   NEW(dsa_verifier, res);
   init_dsa_sha256_verifier(res);
 
-  if (dsa_keypair_from_sexp_alist(&res->key, NULL,
+  if (dsa_keypair_from_sexp_alist(&res->params, res->key, NULL,
 				  DSA_SHA256_MAX_BITS, DSA_SHA256_Q_BITS,
 				  i))
     return &res->super;
@@ -572,9 +577,7 @@ make_dsa_sha256_signer(struct signature_algorithm *self UNUSED,
 
   init_dsa_verifier(verifier);
   
-  dsa_private_key_init(&res->key);
-
-  if (dsa_keypair_from_sexp_alist(&verifier->key, &res->key,
+  if (dsa_keypair_from_sexp_alist(&verifier->params, verifier->key, res->key,
 				  DSA_SHA256_MAX_BITS, DSA_SHA256_Q_BITS,
 				  i))
     {

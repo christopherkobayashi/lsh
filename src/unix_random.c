@@ -377,7 +377,7 @@ random_init_system(void)
 /* Wrapper for using lsh's randomness generator with nettle
  * functions. */
 void
-lsh_random(void *x UNUSED, unsigned length, uint8_t *data)
+lsh_random(void *x UNUSED, size_t length, uint8_t *data)
 {
   random_generate(length, data);
 }

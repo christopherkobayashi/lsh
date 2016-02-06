@@ -176,7 +176,7 @@ random_generate(uint32_t length, uint8_t *dst)
 }
 
 void
-lsh_random(void *ctx UNUSED, unsigned length, uint8_t *dst)
+lsh_random(void *ctx UNUSED, size_t length, uint8_t *dst)
 {
   knuth_lfib_random(&bad_random, length, dst);
 }

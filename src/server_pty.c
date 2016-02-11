@@ -189,7 +189,7 @@ pty_open_slave(struct pty_info *pty)
 #endif /* defined(TIOCSCTTY) */
 
   /* Set terminal modes */
-  if (!tcgetattr(fd, &ios) == -1)
+  if (tcgetattr(fd, &ios) < 0)
     {
       werror("pty_open_slave: Failed to get tty attributes: %e.\n", errno);
       close(fd);
@@ -203,14 +203,14 @@ pty_open_slave(struct pty_info *pty)
       return -1;
     }
 
-  if (!tcsetattr(fd, TCSADRAIN, &ios) == -1)
+  if (tcsetattr(fd, TCSADRAIN, &ios) < 0)
     {
       werror("pty_open_slave: Failed to set tty attributes: %e.\n", errno);
       close(fd);
       return -1;
     }
 
-  if (ioctl(fd, TIOCSWINSZ, &pty->dims) == -1)  
+  if (ioctl(fd, TIOCSWINSZ, &pty->dims) < 0)
     {
       werror("pty_open_slave: Failed to set tty window size: %e.\n", errno);
       close(fd);

@@ -1,3 +1,9 @@
+2016-04-18  Niels Möller  <nisse@lysator.liu.se>
+
+	* argp-fmtstream.h (ARGP_FS_EI): Use __attribute__
+	((__gnu_inline__)) if available, for compatibility with gcc-5.
+	* argp.h (ARGP_EI): Likewise.
+
 2014-10-02  Niels Möller  <nisse@lysator.liu.se>
 
 	* strndup.c (strndup): Fixed off-by-one error, and failure check.

@@ -36,6 +36,7 @@
 #include "command.h"
 #include "connection.h"
 /* For lsh_get_cstring */
+#include "lsh_string.h"
 #include "format.h"
 #include "io.h"
 #include "queue.h"
@@ -331,7 +332,7 @@ DEFINE_COMMAND(io_log_peer_command)
 /* TCP wrapper function, replaces io_log_peer if used */
 
 static void
-do_tcp_wrapper(struct command *s UNUSED,
+do_tcp_wrapper(struct command *s,
 	       struct lsh_object *a,
 	       struct command_continuation *c,
 	       struct exception_handler *e UNUSED)

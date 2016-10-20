@@ -803,7 +803,7 @@ do_connect_callback(struct io_callback *s,
 		    struct lsh_fd *fd)
 {
   CAST(io_connect_callback, self, s);
-  int socket_error;
+  int socket_error = 0;
   socklen_t len = sizeof(socket_error);
   
   /* Check if the connection was successful */
@@ -814,7 +814,7 @@ do_connect_callback(struct io_callback *s,
       trace("io.c: connect_callback: Connect on fd %i failed.\n", fd->fd);
       EXCEPTION_RAISE(fd->e,
 		      make_io_exception(EXC_IO_CONNECT, fd,
-					0, "Connect failed."));
+					socket_error, "Connect failed."));
       close_fd(fd);
     }
   else
@@ -1587,7 +1587,7 @@ do_connect_list_callback(struct io_callback *s,
 			 struct lsh_fd *fd)
 {
   CAST(connect_list_callback, self, s);
-  int socket_error;
+  int socket_error = 0;
   socklen_t len = sizeof(socket_error);
   
   assert(self->state->nfds);
@@ -1609,7 +1609,7 @@ do_connect_list_callback(struct io_callback *s,
 	  /* All addresses failed */
 	  EXCEPTION_RAISE(self->e,
 			  make_io_exception(EXC_IO_CONNECT, NULL,
-					    0, "Connect failed"));
+					    socket_error, "Connect failed"));
 	  KILL_RESOURCE(&self->state->super);
 	  return;
 	}

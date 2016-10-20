@@ -1,5 +1,8 @@
 2016-10-20  Niels Möller  <nisse@lysator.liu.se>
 
+	* src/io.c (do_connect_callback, do_connect_list_callback):
+	Improve error reporting on connection failure.
+
 	* src/io_commands.c: Add missing include of lsh_string.h. Fixes
 	crash when building with tcpwrappers support.
 

@@ -1,5 +1,9 @@
 2017-01-04  Niels Möller  <nisse@lysator.liu.se>
 
+	* src/testsuite/lshd-umask-test: New test case, check that umask
+	in the login shell is non-zero.
+	* src/testsuite/Makefile.am (TS_SH): Added lshd-umask-test.
+
 	* src/daemon.c (daemon_init): Don't clear umask.
 
 2016-10-20  Niels Möller  <nisse@lysator.liu.se>

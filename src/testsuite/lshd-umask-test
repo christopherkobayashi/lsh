@@ -1,0 +1,13 @@
+#! /bin/sh
+
+echo lshd umask test
+
+if [ -z "$srcdir" ] ; then
+  srcdir=`pwd`
+fi
+
+. $srcdir/functions.sh
+
+spawn_lshd && test "`exec_lsh umask`" -gt 0 && test_success
+
+test_done

@@ -250,8 +250,6 @@ daemon_close_fds(void)
      to prevent the process from gaining a controlling terminal.
 
    Changes directory to the root directory so as not to hamper umounts.
-
-   Clears the umask to enable explicit file modes.
 */
 
 int
@@ -303,12 +301,8 @@ daemon_init(enum daemon_mode mode)
     }
 
   /* Enter the root directory to prevent hampering umounts. */
-
   if (chdir(ROOT_DIR) == -1)
     return 0;
-
-  /* Clear umask to enable explicit file modes. */
-  umask(0);
 
   return 1;
 }

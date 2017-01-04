@@ -1,3 +1,7 @@
+2017-01-04  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/daemon.c (daemon_init): Don't clear umask.
+
 2016-10-20  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/io.c (do_connect_callback, do_connect_list_callback):

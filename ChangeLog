@@ -1,3 +1,7 @@
+2017-12-26  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/dummy.c: Delete obsolete file.
+
 2016-02-11  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/server_pty.c (pty_open_slave): Fix error check for tcgetattr

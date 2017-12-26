@@ -389,7 +389,7 @@ unix_get_attributes(struct interact *s)
       res->super.make_raw = do_make_raw;
       res->super.encode = do_encode;
       
-      if (!tty_getattr(self->tty_fd, &res->ios) < 0)
+      if (!tty_getattr(self->tty_fd, &res->ios))
 	{
 	  KILL(res);
 	  return NULL;

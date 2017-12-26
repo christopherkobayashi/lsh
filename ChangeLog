@@ -1,3 +1,8 @@
+2017-12-26  Niels Möller  <nisse@lysator.liu.se>
+
+	* src/unix_interact.c (unix_get_attributes): Fix check of
+	tty_getattr return value.
+
 2017-01-04  Niels Möller  <nisse@lysator.liu.se>
 
 	* src/testsuite/lshd-umask-test: New test case, check that umask
